@@ -1,0 +1,253 @@
+  * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url("../assets/home.jpeg");
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-size: center;
+            background-position: center center; /* Center the background */
+            background-attachment: fixed; /* Parallax effect when scrolling */
+        }
+        
+        header {
+            color: black;
+            padding: 0.5rem 0; /* Increased padding for more space */
+            text-align: center;
+            background-image: url("../assets/he.jpeg");
+            background-size: cover;
+
+        }
+         header h1 {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                font-size: 3rem;    
+        }
+
+        header p {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 1.2rem; /* Adjust the size of the paragraph */
+            color: rgb(101, 107, 112);
+        }
+        
+        nav {
+            background-image: url("../assets/he.jpeg");
+            background-size: cover;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            display: flex;
+            justify-content: center; /* Centers the items horizontally */
+            gap: 60px; /* Slightly reduced gap for a tighter look */
+            padding: 15px 30px; /* Added padding for better spacing */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        }
+        
+        nav a {
+
+            color: rgb(101, 107, 112); /* White text for contrast */
+            text-decoration: none;
+            font-size: 18px; /* Increased font size for readability */
+            font-weight: 500; /* Medium weight for text */
+            transition: color 0.3s, transform 0.3s; /* Smooth transition for color and scale */
+        }
+        
+        nav a:hover {
+            color: black; /* Gold color on hover */
+            transform: scale(1.1); /* Slight zoom effect */
+            letter-spacing: 1px; /* Slightly increase letter-spacing on hover for effect */
+        }
+        
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .product {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            transition: transform 0.3s;
+            border-radius: 5%;
+        }
+
+        .product:hover {
+            transform: scale(1.05);
+        }
+
+        .product img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .product h3 {
+            margin: 15px 0;
+        }
+
+        .product p {
+            color: #555;
+        }
+
+        .product button {
+            background: cadetblue;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .product button:hover {
+            background: #005bb5;
+        }
+
+        button {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: rgb(98, 185, 201); /* Modern blue color */
+            width: 90px; 
+            height: 30px; /* Add height for better clickability */
+            border-radius: 8px; /* Smooth rounded corners */
+            color: white; /* Text color */
+            font-size: 15px; /* Increase font size for readability */
+            font-weight: bold; /* Make text bold */
+            cursor: pointer; /* Add pointer to show it's clickable */
+            transition: all 0.3s ease; /* Smooth hover effect */
+            position: absolute;
+            left: 90%; /* Center it horizontally */
+            transform: translateX(-50%); /* Adjust position after centering */
+        }  
+        button:hover {
+            background-color: rgb(254, 255, 255); /* Darker shade on hover */
+            color:cadetblue;
+            box-shadow: 0px 4px 10px rgba(172, 125, 125, 0.2); /* Soft shadow effect */
+            transform: translateX(-50%) scale(1.05); /* Slight zoom effect */
+        }
+        /* General Section Styles */
+
+footer {
+    background-color: white;
+    color: #333;
+    padding: 40px 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    border-top: 2px solid #ddd;
+}
+
+.footer-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+}
+
+.footer-section h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 5px;
+}
+
+/* About Section */
+.about p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.more-info {
+    font-weight: bold;
+    margin-top: 10px;
+    color: #007bff;
+}
+
+/* Links Section */
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+    color: #007bff;
+}
+
+.contact p {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.social-icons {
+    margin-top: 10px;
+}
+
+.social-icons a {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.social-icons img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+}
+
+.social-icons img:hover {
+    transform: scale(1.1);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    font-size: 12px;
+    color: #888;
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+/* Footer Bottom Link */
+.footer-bottom a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.footer-bottom a:hover {
+    text-decoration: underline;
+}
