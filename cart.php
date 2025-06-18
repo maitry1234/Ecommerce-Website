@@ -136,7 +136,6 @@ if (isset($_GET['remove']) && is_numeric($_GET['remove'])) {
             }
         }
         
-        // Reindex array after removal
         if ($removed) {
             $_SESSION['cart'] = array_values($_SESSION['cart']);
             $_SESSION['success'] = "\"$product_name\" removed from cart.";
@@ -202,13 +201,16 @@ if (count($_SESSION['cart']) > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/homestyle.css">
+    <link rel="stylesheet" href="css/style.css">
     <title>Shopping Cart - Fabrique</title>
     <style>
         .cart-container {
+            border-radius: 2%;
+            background-color: white;
             max-width: 1000px;
             margin: 30px auto;
             padding: 0 20px;
+
         }
         
         .cart-header {
@@ -282,7 +284,7 @@ if (count($_SESSION['cart']) > 0) {
         }
         
         .cart-quantity {
-            display: flex;
+            
             align-items: center;
         }
         
@@ -339,21 +341,31 @@ if (count($_SESSION['cart']) > 0) {
             margin-bottom: 30px;
         }
         
-        .cart-update {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .cart-update:hover {
-            background-color: #45a049;
-        }
+      .cart-update {
+    background-color: #4CAF50;
+    margin-bottom: 20px;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    font-weight: 500;
+    left: 0 !important;
+    transform: translate(0) !important;
+    position: relative;
+    margin: 0 !important;
+    height: fit-content;
+    
+      }
+.cart-update:hover {
+    background-color: #45a049;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+   }
         
         .cart-clear {
+            height: fit-content;
             background-color: #f44336;
             color: white;
             border: none;
@@ -474,7 +486,7 @@ if (count($_SESSION['cart']) > 0) {
         <a href="home.php#products">Products</a>
         <a href="home.php#contact">Contact</a>
         <a href="home.php#aboutus">About us</a>
-        <a href="cart.php" class="cart-link">Cart (<?php echo $item_count; ?>)</a>
+        <a href="cart.php" class="cart-link">🛒 (<?php echo $item_count; ?>)</a>
     </nav>
     
     <div class="cart-container">

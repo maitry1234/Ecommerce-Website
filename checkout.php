@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION["user"])) {
+if (!isset($_SESSION["user_id"])) {
     header("Location: login.php");
     exit();
 }
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['place_order'])) {
             $stmt = $conn->prepare("INSERT INTO orders (user_id, order_date, total_amount, shipping_address, status) VALUES (?, NOW(), ?, ?, 'Pending')");
             
             // FIX: Get the user_id directly from session
-            $user_id = $_SESSION['user'];
+            $user_id = $_SESSION['user_id'];
             
             $full_address = "$address, $city, $state ";
             $stmt->bind_param("ids", $user_id, $total, $full_address);
@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['place_order'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/homestyle.css">
+    <link rel="stylesheet" href="css/style.css">
     <title>Checkout - Fabrique</title>
     <style>
         .checkout-container {
@@ -289,17 +289,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['place_order'])) {
         }
         
         .esewa-btn {
+            position: relative;
             background-color: #60BB46;
             color: white;
             border: none;
-            padding: 10px 20px;
             font-size: 15px;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 20px;
             display: block;
-            width: auto;
-            position: static;
+            left: 0;
+            position: relative;
+            margin: 0 auto;
+            margin-right: 8px;
+            width: fit-content;
+            height: fit-content;
+            padding: 12px;
 
         }
         
@@ -319,7 +323,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['place_order'])) {
         <a href="home.php#products">Products</a>
         <a href="home.php#contact">Contact</a>
         <a href="home.php#aboutus">About us</a>
-        <a href="cart.php" class="cart-link">Cart (<?php echo $item_count; ?>)</a>
+        <a href="cart.php" class="cart-link">🛒  (<?php echo $item_count; ?>)</a>
     </nav>
     
     <div class="checkout-container">

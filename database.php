@@ -1,10 +1,11 @@
 <?php
-$hostName= "localhost";
-$dbUser= "root";
-$dbPassword= "";
-$dbName= "register";
-$conn= mysqli_connect($hostName, $dbUser, $dbPassword, $dbName);
- if(!$conn){
-    die("Something went wrong". mysqli_connect_error());
- }
-?>
+$hostName = "localhost";
+$dbUser = "root";
+$dbPassword = "";
+$dbName = "fabrique";
+
+$conn = mysqli_connect($hostName, $dbUser, $dbPassword, $dbName);
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+

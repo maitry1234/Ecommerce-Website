@@ -2,6 +2,7 @@
 session_start();
 if (isset($_SESSION["user"])) {
    header("Location: home.php");
+   exit();
 }
 ?>
 <!DOCTYPE html>
@@ -28,16 +29,13 @@ if (isset($_SESSION["user"])) {
     
         $errors = array();
 
-    
         if (empty($fullName) || empty($email) || empty($password) || empty($passwordRepeat)) {
             array_push($errors, "All fields are required");
         }
         
-        
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             array_push($errors, "Email is not valid");
         }
-
         
         if (strlen($password) < 8) {
             array_push($errors, "Password must be at least 8 characters long");
@@ -46,29 +44,33 @@ if (isset($_SESSION["user"])) {
         if ($password !== $passwordRepeat) {
             array_push($errors, "Passwords do not match");
         }
+        
         require_once "database.php";
         $sql = "SELECT * FROM users WHERE email = '$email'";
         $result = mysqli_query($conn, $sql);
         $rowCount = mysqli_num_rows($result);
-        if ($rowCount>0) {
-         array_push($errors,"Email already exists!");
+        if ($rowCount > 0) {
+            array_push($errors, "Email already exists!");
         }
+        
         if (count($errors) > 0) {
             foreach ($errors as $error) {
                 echo "<div style='color: red;'>$error</div>";
             }
-        } 
-         else{
-         $sql = "INSERT INTO users (full_name, email, password) VALUES(?,?,?)";
-         $stmt= mysqli_stmt_init( $conn );
-         $prepareStmt= mysqli_stmt_prepare($stmt, $sql);
-         if ($prepareStmt){
-            mysqli_stmt_bind_param($stmt,"sss", $fullName, $email, $passwordHash);
-            mysqli_stmt_execute($stmt);
-            echo '<div class="alert" id="myAlert">';
-            echo 'Registration Succesful!<span class="closebtn" onclick="closeAlert()">&times;</span>';
-            echo '</div>';
-         }   
+        } else {
+            $sql = "INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)";
+            $stmt = mysqli_stmt_init($conn);
+            $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
+            if ($prepareStmt) {
+                mysqli_stmt_bind_param($stmt, "sss", $fullName, $email, $passwordHash);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+                mysqli_close($conn);
+                header("Location: login.php");
+                exit();
+            } else {
+                echo "<div style='color: red;'>Something went wrong with the database query.</div>";
+            }
         }
     }    
     ?>
@@ -78,14 +80,8 @@ if (isset($_SESSION["user"])) {
         <input type="email" id="email" name="email" placeholder="Email" required>
         <input type="password" id="password" name="password" placeholder="Password" required>
         <input type="password" name="repeat_password" placeholder="Repeat Password" required> 
-         <button type="submit" name="submit">Register</button> 
+        <button type="submit" name="submit">Register</button> 
     </form>
 </div>
-    <script>
-        document.getElementById("registrationForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            alert("Registration Successful!");
-        });
-    </script>
 </body>
 </html>

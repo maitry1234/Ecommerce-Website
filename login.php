@@ -21,29 +21,34 @@ if (isset($_SESSION["user"])) {
     <div class="form-container">
         <h2>Log in</h2>
         <?php
-        if (isset($_POST["login"])) {
-           $email = $_POST["email"];
-           $password = $_POST["password"];
-            require_once "database.php";
-            $sql = "SELECT * FROM users WHERE email = '$email'";
-            $result = mysqli_query($conn, $sql);
-            $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
-            if ($user) {
-                if (password_verify($password, $user["password"])) {
-                    session_start();
-                    $_SESSION["user"] = "yes";
-                    $_SESSION["login_success"] = "Login Successful!"; // Store success message
-                    header("Location: home.php");
-                    die();
-                } else {
-                    echo "<div class='alert alert-danger'>Password does not match</div>";
-                }
-            } else {
-                echo "<div class='alert alert-danger'>Email does not match</div>";
-            }
+if (isset($_POST["login"])) {
+   $email = $_POST["email"];
+   $password = $_POST["password"];
+    require_once "database.php";
+    $sql = "SELECT * FROM users WHERE email = '$email'";
+    $result = mysqli_query($conn, $sql);
+    $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    if ($user) {
+        if (password_verify($password, $user["password"])) {
+            session_start();
+            $_SESSION["user"] = "yes";
+            $_SESSION["user_id"] = $user["user_id"]; // Store user ID
+            $_SESSION["full_name"] = $user["full_name"]; // Store user name
+            $_SESSION["email"] = $user["email"]; // Store user email
             
+            // Create personalized success message
+            $_SESSION["login_success"] = "Welcome back, " . $user["full_name"] . "! You have successfully logged in.";
+            
+            header("Location: home.php");
+            die();
+        } else {
+            echo "<div class='alert alert-danger'>Password does not match</div>";
         }
-        ?>
+    } else {
+        echo "<div class='alert alert-danger'>Email does not match</div>";
+    }
+}
+?>
         <form action="login.php" method="post">
             <input type="email" name="email" placeholder="Enter your email" required>
             <input type="password" name="password" placeholder="Enter your password" required>

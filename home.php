@@ -13,7 +13,7 @@ if (isset($_SESSION["login_success"])) {
     unset($_SESSION["login_success"]);
 }
 
-// Fetch categories from database
+
 $sql = "SELECT * FROM categories";
 $result = $conn->query($sql);
 $categories = [];
@@ -30,24 +30,106 @@ if ($result->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/homestyle.css">
+    <link rel="stylesheet" href="css/style.css">
     <title>Fabrique - Bedsheet Store</title>
     <style>
-        .success-message {
-            display: <?php echo !empty($successMessage) ? 'block' : 'none'; ?>;
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            margin: 20px auto;
-            text-align: center;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            font-size: 18px;
-            font-weight: bold;
-        }
+        /* Toast notification styles */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
 
+.toast-message {
+    background: #ffffff;
+    color: #333;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid #4CAF50;
+    max-width: 350px;
+    min-width: 280px;
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+    transform: translateX(400px);
+    opacity: 0;
+    animation: slideInRight 0.4s ease-out forwards;
+}
+
+.toast-message::before {
+    content: "✓";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 12px;
+    vertical-align: middle;
+}
+
+.toast-message .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toast-message .close-btn:hover {
+    color: #666;
+}
+
+.toast-message.success {
+    border-left-color: #4CAF50;
+}
+
+.toast-message.success::before {
+    background: #4CAF50;
+}
+
+/* Animation keyframes */
+@keyframes slideInRight {
+    0% {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+    @keyframes slideOutRight {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    }
+
+        .toast-message.hiding {
+        animation: slideOutRight 0.3s ease-in forwards;
+        }
         .container {
             text-align: center;
             padding: 50px;
@@ -65,13 +147,42 @@ if ($result->num_rows > 0) {
 </head>
 
 <body>
+
 <?php if (!empty($successMessage)) : ?>
-        <div class="success-message"><?php echo $successMessage; ?></div>
-    <?php endif; ?>
-  <header>
-        <h1>Welcome to Fabrique</h1>
-        <p>Your one-stop shop for premium bedsheets, blankets and sleeping dress.</p>
-    </header>
+    <div class="toast-container">
+        <div class="toast-message success" id="toastMessage">
+            <?php echo $successMessage; ?>
+            <button class="close-btn" onclick="closeToast()">&times;</button>
+        </div>
+    </div>
+    <script>
+        function closeToast() {
+            const toast = document.getElementById('toastMessage');
+            if (toast) {
+                toast.classList.add('hiding');
+                setTimeout(() => {
+                    toast.parentElement.remove();
+                }, 300);
+            }
+        }
+
+        // Auto-hide the toast after 5 seconds
+        setTimeout(function() {
+            closeToast();
+        }, 5000);
+
+        // Optional: Click anywhere on toast to close
+        document.getElementById('toastMessage').addEventListener('click', function(e) {
+            if (e.target.classList.contains('close-btn')) return;
+            closeToast();
+        });
+    </script>
+<?php endif; ?>
+
+<header>
+    <h1>Welcome to Fabrique<?php echo isset($_SESSION["full_name"]) ? ', ' . $_SESSION["full_name"] : ''; ?>!</h1>
+    <p>Your one-stop shop for premium bedsheets, blankets and sleeping dress.</p>
+</header>
     <nav>
     <button onclick="goToPage()">Log out</button>
         <script>

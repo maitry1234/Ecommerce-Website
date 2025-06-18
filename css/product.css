@@ -1,10 +1,4 @@
-.product-container {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 0 20px;
-    display: flex;
-    flex-wrap: wrap;
-}
+
 
 .breadcrumb {
     width: 100%;
@@ -25,6 +19,7 @@
     min-width: 300px;
     text-align: center;
     padding: 20px;
+    border-radius: 8px;
 }
 
 .product-image img {
@@ -84,25 +79,8 @@
     text-align: center;
 }
 
-.add-to-cart {
-    background-color: #4CAF50;
-    color: white;
-     margin-top: 20px;
-  margin-left: 50px;
-    padding: 10px 20px;
-    font-size: 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: auto;               
-    text-align: center;        
-    display: inline-block;     
-    white-space: nowrap;           
-    position: static; 
-}
-
 .add-to-cart:hover {
-    background-color: #45a049;
+    background-color: white;
 }
 
 .related-products {
@@ -110,10 +88,7 @@
     margin-top: 50px;
 }
 
-.related-title {
-    text-align: center;
-    margin-bottom: 30px;
-}
+
 
 .related-grid {
     display: grid;
@@ -122,11 +97,13 @@
 }
 
 .related-product {
+    
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
     transition: transform 0.3s;
     cursor: pointer;
+    
 }
 
 .related-product:hover {
@@ -175,4 +152,58 @@
     background-color: #f2dede;
     color: #a94442;
     border: 1px solid #ebccd1;
+}
+.product-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #ffffff;
+}
+
+.related-title {
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: #ffffff;
+}
+
+.add-to-cart {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: auto;
+    text-align: center;
+    display: inline-block;
+    white-space: nowrap;
+    position: static;
+    margin: 0;
+    height: 100%;
+}
+
+.add-to-cart-form{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.product-container{
+    /* background: url(../assets/home.jpeg) center center / cover no-repeat; */
+    background: transparent;
+}
+.product-details, .product-image{
+    background: white;
+
+}
+
+.related-title{
+    background-color: transparent;
+}
+.related-product{
+    background: white;
+    border-radius: 8px;
 }

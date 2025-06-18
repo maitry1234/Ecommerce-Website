@@ -9,20 +9,55 @@ $order_id = $_GET['order_id'];
 $amount = $_GET['amount'];
 $reference = $_GET['reference'];
 
-// eSewa API configuration
-$esewa_merchant_id = "YOUR_ESEWA_MERCHANT_ID"; // Replace with your actual eSewa Merchant ID
-$esewa_service_url = "https://uat.esewa.com.np/epay/main"; // Use production URL in production: https://esewa.com.np/epay/main
+// eSewa QR Code details
+$esewa_merchant_id = "9860308373"; // Replace with your actual eSewa Merchant ID
+$esewa_number = "9860308373"; // Replace with your actual eSewa number
 
-// Set URLs for success and failure
-$success_url = "https://" . $_SERVER['HTTP_HOST'] . "/esewa_success.php";
-$failure_url = "https://" . $_SERVER['HTTP_HOST'] . "/esewa_failure.php";
-
-// Store product details for verification
+// Store payment details for verification
 $_SESSION['esewa_payment'] = [
     'amount' => $amount,
     'order_id' => $order_id,
     'reference' => $reference
 ];
+
+// Handle screenshot upload
+if ($_POST && isset($_FILES['payment_screenshot'])) {
+    $upload_dir = 'payment_screenshots/';
+    if (!file_exists($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
+    }
+    
+    $file_extension = pathinfo($_FILES['payment_screenshot']['name'], PATHINFO_EXTENSION);
+    $new_filename = 'payment_' . $order_id . '_' . time() . '.' . $file_extension;
+    $upload_path = $upload_dir . $new_filename;
+    
+    // Validate file
+    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+    $max_size = 5 * 1024 * 1024; // 5MB
+    
+    if (in_array(strtolower($file_extension), $allowed_extensions) && $_FILES['payment_screenshot']['size'] <= $max_size) {
+        if (move_uploaded_file($_FILES['payment_screenshot']['tmp_name'], $upload_path)) {
+            // Insert payment record into database
+            require_once "database.php";
+            
+            $sql = "INSERT INTO payments (order_id, user_id, amount, reference, screenshot_path, payment_status, created_at) VALUES (?, ?, ?, ?, ?, 'pending', NOW())";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "sisss", $order_id, $_SESSION["user"], $amount, $reference, $upload_path);
+            
+            if (mysqli_stmt_execute($stmt)) {
+                $_SESSION['payment_success'] = "Payment screenshot uploaded successfully. Your payment is under verification.";
+                header("Location: home.php");
+                exit();
+            } else {
+                $error = "Database error. Please try again.";
+            }
+        } else {
+            $error = "Failed to upload screenshot. Please try again.";
+        }
+    } else {
+        $error = "Invalid file. Please upload JPG, PNG, or GIF files under 5MB.";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,11 +65,11 @@ $_SESSION['esewa_payment'] = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/homestyle.css">
-    <title>eSewa Payment - Fabrique</title>
+    <link rel="stylesheet" href="css/style.css">
+    <title>eSewa QR Payment - Fabrique</title>
     <style>
         .esewa-container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
@@ -68,8 +103,51 @@ $_SESSION['esewa_payment'] = [
             margin-top: 15px;
         }
         
-        .pay-button {
-            background-color: #60BB46; /* eSewa green */
+        .qr-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px dashed #60BB46;
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background-color: white;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .esewa-details {
+            background-color: #60BB46;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .upload-section {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+        }
+        
+        .file-input {
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            background-color: white;
+        }
+        
+        .submit-button {
+            position: relative;
+            background-color: #60BB46;
             color: white;
             border: none;
             padding: 12px 30px;
@@ -79,7 +157,7 @@ $_SESSION['esewa_payment'] = [
             margin-top: 20px;
         }
         
-        .pay-button:hover {
+        .submit-button:hover {
             background-color: #4e9e3a;
         }
         
@@ -92,6 +170,32 @@ $_SESSION['esewa_payment'] = [
         
         .back-link:hover {
             text-decoration: underline;
+        }
+        
+        .error {
+            color: red;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #ffe6e6;
+            border-radius: 4px;
+        }
+        
+        .instructions {
+            text-align: left;
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin: 8px 0;
         }
     </style>
 </head>
@@ -106,14 +210,13 @@ $_SESSION['esewa_payment'] = [
         <a href="home.php#products">Products</a>
         <a href="home.php#contact">Contact</a>
         <a href="home.php#aboutus">About us</a>
-        <a href="cart.php" class="cart-link">Cart</a>
+        <a href="cart.php" class="cart-link">🛒 </a>
     </nav>
     
     <div class="esewa-container">
         <img src="images/esewa_logo.png" alt="eSewa" class="esewa-logo" onerror="this.src='https://esewa.com.np/common/images/esewa_logo.png'; this.onerror='';">
         
-        <h2>eSewa Payment</h2>
-        <p>Please review your payment details before proceeding to eSewa.</p>
+        <h2>eSewa QR Payment</h2>
         
         <div class="payment-details">
             <div class="detail-row">
@@ -130,19 +233,47 @@ $_SESSION['esewa_payment'] = [
             </div>
         </div>
         
-        <!-- eSewa Payment Form -->
-        <form action="<?php echo $esewa_service_url; ?>" method="POST">
-            <input value="<?php echo $amount; ?>" name="tAmt" type="hidden">
-            <input value="<?php echo $amount; ?>" name="amt" type="hidden">
-            <input value="0" name="txAmt" type="hidden">
-            <input value="0" name="psc" type="hidden">
-            <input value="0" name="pdc" type="hidden">
-            <input value="<?php echo $esewa_merchant_id; ?>" name="scd" type="hidden">
-            <input value="<?php echo $reference; ?>" name="pid" type="hidden">
-            <input value="<?php echo $success_url; ?>" type="hidden" name="su">
-            <input value="<?php echo $failure_url; ?>" type="hidden" name="fu">
-            <input value="Pay with eSewa" type="submit" class="pay-button">
-        </form>
+        <div class="qr-section">
+            <h3>Scan QR Code to Pay</h3>
+            <div class="qr-code">
+                <!-- Replace this with actual QR code generation -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=esewa://pay?pa=<?php echo $esewa_number; ?>&pn=Fabrique&am=<?php echo $amount; ?>&cu=NPR&tn=Order%20FAB<?php echo $order_id; ?>" alt="eSewa QR Code">
+            </div>
+            <div class="esewa-details">
+                <strong>eSewa ID:</strong> <?php echo $esewa_number; ?><br>
+                <strong>Amount:</strong> Rs <?php echo number_format($amount, 2); ?><br>
+                <strong>Reference:</strong> FAB<?php echo $order_id; ?>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h4>Payment Instructions:</h4>
+            <ol>
+                <li>Open your eSewa mobile app</li>
+                <li>Scan the QR code above OR send money to eSewa ID: <strong><?php echo $esewa_number; ?></strong></li>
+                <li>Enter amount: <strong>Rs <?php echo number_format($amount, 2); ?></strong></li>
+                <li>Add reference: <strong>FAB<?php echo $order_id; ?></strong></li>
+                <li>Complete the payment</li>
+                <li>Take a screenshot of the successful payment</li>
+                <li>Upload the screenshot below and submit</li>
+            </ol>
+        </div>
+        
+        <?php if (isset($error)): ?>
+            <div class="error"><?php echo $error; ?></div>
+        <?php endif; ?>
+        
+        <div class="upload-section">
+            <h3>Upload Payment Screenshot</h3>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="file-input">
+                    <label for="payment_screenshot"><strong>Select Screenshot:</strong></label><br>
+                    <input type="file" id="payment_screenshot" name="payment_screenshot" accept="image/*" required>
+                    <small>Accepted formats: JPG, PNG, GIF (Max 5MB)</small>
+                </div>
+                <button type="submit" class="submit-button">Upload & Submit Payment</button>
+            </form>
+        </div>
         
         <a href="checkout.php" class="back-link">Back to Checkout</a>
     </div>
