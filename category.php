@@ -48,6 +48,10 @@ while ($row = $product_result->fetch_assoc()) {
     <link rel="stylesheet" href="css/style.css">
     <title><?php echo $category_name; ?> - Fabrique</title>
     <style>
+        nav a {
+        text-decoration: none;
+        }
+       
         .category-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -134,7 +138,7 @@ while ($row = $product_result->fetch_assoc()) {
         <a href="ss.php#aboutus">About us</a>
     </nav>
     <div class="category-container">
-        <a href="ss.php" class="back-to-home">← Back to Home</a>
+        <a href="home.php" class="back-to-home">← Back to Home</a>
         <div class="category-header">
             <h1><?php echo $category_name; ?></h1>
             <p><?php echo $category['category_description']; ?></p>

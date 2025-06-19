@@ -342,26 +342,26 @@ if (count($_SESSION['cart']) > 0) {
         }
         
       .cart-update {
-    background-color: #4CAF50;
-    margin-bottom: 20px;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 16px;
-    font-weight: 500;
-    left: 0 !important;
-    transform: translate(0) !important;
-    position: relative;
-    margin: 0 !important;
-    height: fit-content;
+        background-color: #4CAF50;
+         margin-bottom: 20px;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-size: 16px;
+        font-weight: 500;
+        left: 0 !important;
+        transform: translate(0) !important;
+        position: relative;
+        margin: 0 !important;
+        height: fit-content;
     
       }
-.cart-update:hover {
-    background-color: #45a049;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    .cart-update:hover {
+        background-color: #45a049;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
    }
         
         .cart-clear {
@@ -412,7 +412,7 @@ if (count($_SESSION['cart']) > 0) {
         .checkout-button {
             display: block;
             width: 100%;
-            background-color: #e91e63;
+            background-color: cadetblue;
             color: white;
             border: none;
             padding: 15px;
@@ -426,7 +426,7 @@ if (count($_SESSION['cart']) > 0) {
         }
         
         .checkout-button:hover {
-            background-color: #d81b60;
+            background-color:rgb(10, 90, 112);
         }
         
         .alert {

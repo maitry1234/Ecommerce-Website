@@ -150,11 +150,15 @@ if ($_POST && isset($_FILES['payment_screenshot'])) {
             background-color: #60BB46;
             color: white;
             border: none;
-            padding: 12px 30px;
             font-size: 16px;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 20px;
+            margin: 0 auto;
+            margin-left: 30px;
+            width: fit-content;
+            height: fit-content;
+            padding: 12px;
+            display: flex;
         }
         
         .submit-button:hover {

@@ -191,8 +191,8 @@ if ($result->num_rows > 0) {
             }
         </script>
         <a href="#products">Products</a>
-        <a href="#contact">Contact</a>
-        <a href="#aboutus">About us</a>
+        <a href="contact.php">Contact</a>
+        <a href="about.php">About us</a>
     </nav>
     <div class="container">
         <section id="products">

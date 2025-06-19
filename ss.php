@@ -33,29 +33,30 @@ if (isset($_SESSION['user']) && isset($_SESSION['cart'])) {
             <a href="login.php" class="cart-link">🛒 (0)</a>
         <?php endif; ?>
         <a href="#products">Products</a>
-        <a href="#contact">Contact</a>
-        <a href="#aboutus">About us</a>
+        <a href="contact.php">Contact</a>
+        <a href="about.php">About us</a>
     </nav>
     <div class="container">
         <section id="products">
             <h2>Our Products</h2>
             <div class="products">
                 <div class="product">
-                    <a href="category.php?id=1">
-                        <img src="assets/bed1.jpg" alt="Bedsheet 1">
-                        <h3>Bedsheets</h3>
-                        <p>Variety of designs</p>
+                    <a href="category.php?id=1" style="text-decoration: none; color: black;">
+                         <img src="assets/bed1.jpg" alt="Bedsheet 1">
+                            <h3>Bedsheets</h3>
+                            <p>Variety of designs</p>
                     </a>
+
                 </div>
                 <div class="product">
-                    <a href="category.php?id=2">
+                    <a href="category.php?id=2" style="text-decoration: none; color: black;">
                         <img src="assets/Totebag.jpg" alt="Totebag">
                         <h3>Totebags</h3>
                         <p>Hand Painted</p>
                     </a>
                 </div>
                 <div class="product">
-                    <a href="category.php?id=3">
+                    <a href="category.php?id=3" style="text-decoration: none; color: black;">
                         <img src="assets/blanket1.jpg" alt="Blanket">
                         <h3>Blankets</h3>
                         <p>Nepali pure cotton</p>

@@ -321,8 +321,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['place_order'])) {
     <nav>
         <button onclick="window.location.href='logout.php'">Log out</button>
         <a href="home.php#products">Products</a>
-        <a href="home.php#contact">Contact</a>
-        <a href="home.php#aboutus">About us</a>
+        <a href="contact.php">Contact</a>
+        <a href="about.php">About us</a>
         <a href="cart.php" class="cart-link">🛒  (<?php echo $item_count; ?>)</a>
     </nav>
     

@@ -1,3 +1,7 @@
+<?php
+include_once 'database.php'; 
+?>
+
 <footer>
     <div class="footer-container">
         <div class="footer-section about">

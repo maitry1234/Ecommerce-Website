@@ -67,8 +67,8 @@ while ($row = $related_result->fetch_assoc()) {
             <a href="login.php" class="cart-link">🛒 (0)</a>
         <?php endif; ?>
         <a href="ss.php#products">Products</a>
-        <a href="ss.php#contact">Contact</a>
-        <a href="ss.php#aboutus">About us</a>
+        <a href="contact.php">Contact</a>
+        <a href="about.php">About us</a>
     </nav>
     <div class="product-container">
         <div class="breadcrumb">
@@ -78,7 +78,7 @@ while ($row = $related_result->fetch_assoc()) {
             <?php if (isset($_SESSION['error'])): ?>
                 <div class="alert alert-error"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
             <?php endif; ?>
-            <a href="ss.php">Home</a> > 
+            <a href="home.php">Home</a> > 
             <a href="category.php?id=<?php echo $product['category_id']; ?>"><?php echo $product['category_name']; ?></a> > 
             <?php echo $product['product_name']; ?>
         </div>
