@@ -14,7 +14,6 @@ require_once "database.php";
     <title>Admin Dashboard - Sister's Shop</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-      
         .sidebar {
             width: 250px;
             background: cadetblue;
@@ -79,6 +78,44 @@ require_once "database.php";
             margin: 0;
             color: #333;
         }
+        .messages-section {
+            margin-top: 40px;
+        }
+        .messages-section h2 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        .messages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .message-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-top: 4px solid #4CAF50;
+        }
+        .message-card h3 {
+            margin: 0 0 10px;
+            color: #4CAF50;
+            font-size: 1.3em;
+        }
+        .message-card p {
+            color: #333;
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+        .message-card .message-text {
+            color: #666;
+            font-style: italic;
+        }
+        .message-card .submitted-at {
+            color: #999;
+            font-size: 0.9em;
+        }
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -120,6 +157,29 @@ require_once "database.php";
                 echo "<div class='stat-card'><h3>{$stat['title']}</h3><p>$count</p></div>";
             }
             ?>
+        </div>
+        <div class="messages-section">
+            <h2>Messages & Reviews</h2>
+            <div class="messages-grid">
+                <?php
+                $result = mysqli_query($conn, "SELECT * FROM contact_messages ORDER BY submitted_at DESC");
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<div class='message-card'>";
+                        echo "<h3>" . htmlspecialchars($row['subject']) . "</h3>";
+                        echo "<p><strong>From:</strong> " . htmlspecialchars($row['name']) . " (" . htmlspecialchars($row['email']) . ")</p>";
+                        if (!empty($row['phone'])) {
+                            echo "<p><strong>Phone:</strong> " . htmlspecialchars($row['phone']) . "</p>";
+                        }
+                        echo "<p class='message-text'>" . htmlspecialchars($row['message']) . "</p>";
+                        echo "<p class='submitted-at'>Submitted: " . $row['submitted_at'] . "</p>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "<p>No messages or reviews yet.</p>";
+                }
+                ?>
+            </div>
         </div>
     </div>
 </body>

@@ -133,9 +133,9 @@ while ($row = $product_result->fetch_assoc()) {
             <button onclick="window.location.href='login.php'">Login</button>
             <a href="login.php" class="cart-link">🛒  (0)</a>
         <?php endif; ?>
-        <a href="ss.php#products">Products</a>
-        <a href="ss.php#contact">Contact</a>
-        <a href="ss.php#aboutus">About us</a>
+        <a href="home.php#products">Products</a>
+        <a href="home.php#contact">Contact</a>
+        <a href="home.php#aboutus">About us</a>
     </nav>
     <div class="category-container">
         <a href="home.php" class="back-to-home">← Back to Home</a>

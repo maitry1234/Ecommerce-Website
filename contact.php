@@ -19,13 +19,13 @@ if (!isset($_SESSION["user"])) {
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
             background-size: cover;
             background-position: center;
-            height: 300px;
+            height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: white;
-            margin-bottom: 50px;
+          
         }
         
         .hero-content h1 {
@@ -196,7 +196,8 @@ if (!isset($_SESSION["user"])) {
         }
         
         .submit-btn:hover {
-            transform: translateY(-2px);
+            color: white;
+              transition: transform 0.3s ease;
             box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
         }
         
@@ -229,8 +230,7 @@ if (!isset($_SESSION["user"])) {
                 window.location.href = "logout.php";  
             }
         </script>
-        <a href="<?php echo $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : 'index.php'; ?>">Back to Home</a>
-        <a href="#products">Products</a>
+        <a href="home.php">Back to Home</a>
         <a href="about.php">About us</a>
     </nav>
     

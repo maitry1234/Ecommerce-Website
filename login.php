@@ -15,8 +15,29 @@ if (isset($_SESSION["user"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In - Sister's Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/signstyle.css"> 
 </head>
+<style>
+  .password-wrapper {
+    position: relative;
+    width: fit-content;
+  }
+
+  .password-wrapper input {
+    padding-right: 40px; /* space for eye icon */
+  }
+
+  .toggle-eye {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+  }
+</style>
 <body>
     <header>
         <h1>Start Shopping</h1>
@@ -42,7 +63,7 @@ if (isset($_SESSION["user"])) {
                     $_SESSION["full_name"] = $user["full_name"];
                     $_SESSION["email"] = $user["email"];
                     $_SESSION["is_admin"] = $user["is_admin"];
-                    $_SESSION["login_success"] = "Welcome back, " . $user["full_name"] . "! You have successfully logged in.";
+                    $_SESSION["login_success"] = "Welcome, " . $user["full_name"] . "! You have successfully logged in.";
                     if ($user["is_admin"] == 1) {
                         header("Location: admin_dashboard.php");
                     } else {
@@ -59,10 +80,33 @@ if (isset($_SESSION["user"])) {
         }
         ?>
         <form action="login.php" method="post">
-            <input type="email" name="email" placeholder="Enter your email" required>
-            <input type="password" name="password" placeholder="Enter your password" required>
-            <button type="submit" value="Login" name="login">Sign In</button>
+        <input type="email" name="email" placeholder="Enter your email" required>
+
+          <div style="position: relative;">
+             <input type="password" id="password" name="password" placeholder="Enter your password" required style="width: 100%; padding-right: 35px;">
+
+             <i class="fa-regular fa-eye" id="togglePassword"
+               style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+              cursor: pointer; color: #aaa; font-size: 16px;"></i>
+              </div>
+
+          <button type="submit" name="login">Sign In</button>
         </form>
+
+<script>
+  const togglePassword = document.getElementById("togglePassword");
+  const passwordInput = document.getElementById("password");
+
+  togglePassword.addEventListener("click", function () {
+    const isPassword = passwordInput.type === "password";
+    passwordInput.type = isPassword ? "text" : "password";
+
+    this.classList.toggle("fa-eye");
+    this.classList.toggle("fa-eye-slash");
+  });
+</script>
+
+
         <p>Don't have an account? <a href="registration.php">Sign Up</a></p>
     </div>
     <footer>

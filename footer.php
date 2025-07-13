@@ -39,8 +39,6 @@ include_once 'database.php';
             <h3>Useful Links</h3>
             <ul>
                 <li><a href="about.php">About Us</a></li>
-                <li><a href="delivery.php">Delivery Policy</a></li>
-                <li><a href="refund.php">Return & Refund Policy</a></li>
                 <li><a href="contact.php">Contact Us</a></li>
             </ul>
         </div>

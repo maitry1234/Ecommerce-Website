@@ -343,7 +343,7 @@ if (count($_SESSION['cart']) > 0) {
         
       .cart-update {
         background-color: #4CAF50;
-         margin-bottom: 20px;
+        margin-bottom: 20px;
         color: white;
         border: none;
         padding: 10px 20px;
@@ -483,7 +483,6 @@ if (count($_SESSION['cart']) > 0) {
     
     <nav>
         <button onclick="window.location.href='logout.php'">Log out</button>
-        <a href="home.php#products">Products</a>
         <a href="home.php#contact">Contact</a>
         <a href="home.php#aboutus">About us</a>
         <a href="cart.php" class="cart-link">🛒 (<?php echo $item_count; ?>)</a>

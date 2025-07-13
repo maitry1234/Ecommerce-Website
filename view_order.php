@@ -6,14 +6,15 @@ if (!isset($_SESSION["user"]) || !isset($_SESSION["is_admin"]) || $_SESSION["is_
 }
 require_once "database.php";
 
-$order_id = $_GET["id"];
-$sql = "SELECT o.*, u.full_name, u.email FROM orders o JOIN users u ON o.user_id = u.user_id WHERE o.order_id = ?";
-$stmt = mysqli_prepare($conn, $sql);
-mysqli_stmt_bind_param($stmt, "i", $order_id);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-$order = mysqli_fetch_assoc($result);
-mysqli_stmt_close($stmt);
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_status"])) {
+    $order_id = $_POST["order_id"];
+    $status = $_POST["status"];
+    $sql = "UPDATE orders SET status = ? WHERE order_id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "si", $status, $order_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,10 +29,9 @@ mysqli_stmt_close($stmt);
         .sidebar a { display: block; color: white; text-decoration: none; padding: 10px; margin-bottom: 5px; border-radius: 5px; transition: background 0.3s ease; }
         .sidebar a:hover { background: #34495e; }
         .content { margin-left: 270px; padding: 20px; flex-grow: 1; }
-        .header { background: white; padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .header h1 { margin: 0; color: #4CAF50; }
+        .header { padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .header h1 { margin: 0; color:black; }
         .order-container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        .order-container h2 { color: #4CAF50; margin-bottom: 20px; }
         .order-details p { margin: 5px 0; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
@@ -51,36 +51,41 @@ mysqli_stmt_close($stmt);
     </div>
     <div class="content">
         <div class="header">
-            <h1>Order Details</h1>
+            <h1>Manage Orders</h1>
         </div>
-        <div class="order-container">
-            <h2>Order #<?php echo $order['order_id']; ?></h2>
-            <div class="order-details">
-                <p><strong>User:</strong> <?php echo htmlspecialchars($order['full_name']); ?> (<?php echo htmlspecialchars($order['email']); ?>)</p>
-                <p><strong>Date:</strong> <?php echo $order['order_date']; ?></p>
-                <p><strong>Total Amount:</strong> Rs <?php echo number_format($order['total_amount'], 2); ?></p>
-                <p><strong>Status:</strong> <?php echo $order['status']; ?></p>
-                <p><strong>Shipping Address:</strong> <?php echo htmlspecialchars($order['shipping_address']); ?></p>
-            </div>
-            <h3>Order Items</h3>
+        <div class="table-container">
+            <h2>Order List</h2>
             <table>
-                <tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th></tr>
+                <tr><th>ID</th><th>User</th><th>Date</th><th>Total</th><th>Status</th><th>Payment Status</th><th>Actions</th></tr>
                 <?php
-                $sql = "SELECT oi.*, p.product_name FROM order_items oi JOIN products p ON oi.product_id = p.product_id WHERE oi.order_id = ?";
-                $stmt = mysqli_prepare($conn, $sql);
-                mysqli_stmt_bind_param($stmt, "i", $order_id);
-                mysqli_stmt_execute($stmt);
-                $result = mysqli_stmt_get_result($stmt);
-                while ($item = mysqli_fetch_assoc($result)) {
-                    $total = $item['quantity'] * $item['price'];
+                $result = mysqli_query($conn, "SELECT o.*, u.full_name, p.payment_status FROM orders o JOIN users u ON o.user_id = u.user_id LEFT JOIN payments p ON o.order_id = p.order_id");
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $payment_status = $row['payment_status'] ?? 'No Payment';
                     echo "<tr>
-                        <td>" . htmlspecialchars($item['product_name']) . "</td>
-                        <td>{$item['quantity']}</td>
-                        <td>Rs " . number_format($item['price'], 2) . "</td>
-                        <td>Rs " . number_format($total, 2) . "</td>
+                        <td>{$row['order_id']}</td>
+                        <td>" . htmlspecialchars($row['full_name']) . "</td>
+                        <td>{$row['order_date']}</td>
+                        <td>Rs " . number_format($row['total_amount'], 2) . "</td>
+                        <td>
+                            <form action='manage_orders.php' method='post'>
+                                <input type='hidden' name='order_id' value='{$row['order_id']}'>
+                                <select name='status'>
+                                    <option value='Pending' " . ($row['status'] == 'Pending' ? 'selected' : '') . ">Pending</option>
+                                    <option value='Processing' " . ($row['status'] == 'Processing' ? 'selected' : '') . ">Processing</option>
+                                    <option value='Shipped' " . ($row['status'] == 'Shipped' ? 'selected' : '') . ">Shipped</option>
+                                    <option value='Delivered' " . ($row['status'] == 'Delivered' ? 'selected' : '') . ">Delivered</option>
+                                </select>
+                                <button type='submit' name='update_status'>Update</button>
+                            </form>
+                        </td>
+                        <td>$payment_status</td>
+                        <td class='action-links'>";
+                    if ($payment_status != 'No Payment') {
+                        echo "<a href='verify_payment.php?order_id={$row['order_id']}'>Verify Payment</a>";
+                    }
+                    echo "</td>
                     </tr>";
                 }
-                mysqli_stmt_close($stmt);
                 ?>
             </table>
         </div>

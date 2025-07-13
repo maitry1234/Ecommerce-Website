@@ -16,16 +16,17 @@ if (!isset($_SESSION["user"])) {
     <style>
 
         .hero-section {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1631452180539-96aca7d48617?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
+            background-image: url("assets/header.jpg");
+            background-size: cover;          
+            background-repeat: no-repeat;
+            background-position: center ;
             height: 200px; /* Reduced height */
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: white;
-            margin-bottom: 40px;
+            margin-bottom: 0px;
         }
 
         .hero-content h1 {
@@ -41,12 +42,11 @@ if (!isset($_SESSION["user"])) {
         }
 
         nav {
-            background: white;
             padding: 15px 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 40px;
             margin-bottom: 40px;
         }
 
@@ -334,21 +334,20 @@ if (!isset($_SESSION["user"])) {
                 window.location.href = "logout.php";  
             }
         </script>
-        <a href="<?php echo $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : 'index.php'; ?>">Back to Home</a>
-        <a href="#products">Products</a>
+        <a href="home.php">Back to Home</a>
         <a href="contact.php">Contact</a>
     </nav>
 
     <section class="sisters-story">
         <div class="story-text">
             <h2>Meet Sabita & Aruna</h2>
-            <p>We're Sabita and Aruna Sharma, sisters who transformed our childhood passion for textiles into Fabrique – Nepal's cherished home textile brand. Inspired by our grandmother, a skilled seamstress, we grew up immersed in the art of fabric creation.</p>
+            <p>We're Sabita and Aruna Bajracharya, sisters who transformed our childhood passion for textiles into Fabrique – Nepal's cherished home textile brand. Inspired by our grandmother, a skilled seamstress, we grew up immersed in the art of fabric creation.</p>
             <p>Sabita, the elder sister, honed her craft in fashion design in Delhi, while Aruna mastered business management in Kathmandu. After years apart, our shared love for creating beautiful home essentials brought us back together in Nepal.</p>
             <p>In 2020, we launched Fabrique from a small workshop in Thamel, starting with bedsheets and growing to include blankets, tote bags, and more. Each piece reflects our commitment to craftsmanship and comfort.</p>
             <p>Our products are more than textiles – they’re stories of sisterhood, tradition, and the joy of making your home a sanctuary.</p>
         </div>
         <div class="sisters-photo">
-            <img src="https://images.unsplash.com/photo-1494790108755-2616c60e1d9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Sabita and Aruna - The Fabrique Sisters">
+            <img src="assets/sister.jpeg" alt="Sabita and Aruna - The Fabrique Sisters">
         </div>
     </section>
 
